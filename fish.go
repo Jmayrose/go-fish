@@ -29,39 +29,44 @@ func printCard(card Card) {
 	fmt.Println(card.suit, displayedValue)
 }
 
-func determineSuit(index int) string {
-	if index < 13 {
-		return "♠"
-	} else if index < 26 {
-		return "♦"
-	} else if index < 39 {
-		return "♥"
-	} else {
-		return "♣"
+func makeDeck() [52]Card {
+	var deck [52]Card
+	for x := 0; x < len(deck); x++ {
+		deck[x].value = x%13 + 1
+		if x < 13 {
+			deck[x].suit = "♠"
+		} else if x < 26 {
+			deck[x].suit = "♦"
+		} else if x < 39 {
+			deck[x].suit = "♥"
+		} else {
+			deck[x].suit = "♣"
+		}
 	}
+	return deck
 }
 
-//Shuffles passed array
+//Shuffle passed array
 func Shuffle(vals []Card) {
-	r := rand.New(rand.NewSource(time.Now().Unix()))
-	for len(vals) > 0 {
-		n := len(vals)
-		randIndex := r.Intn(n)
-		vals[n-1], vals[randIndex] = vals[randIndex], vals[n-1]
-		vals = vals[:n-1]
-	}
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(vals), func(i, j int) { vals[i], vals[j] = vals[j], vals[i] })
 }
 
 func main() {
 
-	var deck [52]Card
-	for x := 0; x < len(deck); x++ {
-		deck[x].value = x%13 + 1
-		deck[x].suit = determineSuit(x)
-	}
+	var deck = makeDeck()
 
-	Shuffle(deck)
 	for eachCard := range deck {
 		printCard(deck[eachCard])
 	}
+
+	println("\n")
+
+	//? Have to pass slices to function?
+	//? what is a golang slice
+	Shuffle(deck[:])
+	for eachCard := range deck {
+		printCard(deck[eachCard])
+	}
+
 }
