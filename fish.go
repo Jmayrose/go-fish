@@ -29,21 +29,38 @@ func printCard(card Card) {
 	fmt.Println(card.suit, displayedValue)
 }
 
-func makeDeck() [52]Card {
-	var deck [52]Card
-	for x := 0; x < len(deck); x++ {
-		deck[x].value = x%13 + 1
+func printHand(hand []Card) {
+	for eachCard := range hand {
+		printCard(hand[eachCard])
+	}
+}
+
+func makeDeck() []Card {
+	var deck []Card
+	for x := 0; x < 52; x++ {
+		var newCard Card
+		newCard.value = x%13 + 1
 		if x < 13 {
-			deck[x].suit = "♠"
+			newCard.suit = "♠"
 		} else if x < 26 {
-			deck[x].suit = "♦"
+			newCard.suit = "♦"
 		} else if x < 39 {
-			deck[x].suit = "♥"
+			newCard.suit = "♥"
 		} else {
-			deck[x].suit = "♣"
+			newCard.suit = "♣"
 		}
+		deck = append(deck, newCard)
 	}
 	return deck
+}
+
+func drawCards(deck []Card, numCards int) []Card {
+	newHand := make([]Card, 0)
+	for x := 0; x < numCards; x++ {
+		newHand = append(newHand, deck[0])
+		deck = deck[1:]
+	}
+	return newHand
 }
 
 //Shuffle passed array
@@ -55,18 +72,14 @@ func Shuffle(vals []Card) {
 func main() {
 
 	var deck = makeDeck()
+	Shuffle(deck)
 
-	for eachCard := range deck {
-		printCard(deck[eachCard])
-	}
+	println(len(deck))
+	var hand1 = drawCards(deck, 5)
+	//TODO remove cards from deck when drawing
+	//? pass by reference
+	println(len(deck))
 
-	println("\n")
-
-	//? Have to pass slices to function?
-	//? what is a golang slice
-	Shuffle(deck[:])
-	for eachCard := range deck {
-		printCard(deck[eachCard])
-	}
-
+	// println(hand1)
+	printHand(hand1)
 }
