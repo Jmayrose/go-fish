@@ -54,11 +54,12 @@ func makeDeck() []Card {
 	return deck
 }
 
-func drawCards(deck []Card, numCards int) []Card {
+func drawCards(deck *[]Card, numCards int) []Card {
+
 	newHand := make([]Card, 0)
 	for x := 0; x < numCards; x++ {
-		newHand = append(newHand, deck[0])
-		deck = deck[1:]
+		newHand = append(newHand, (*deck)[0])
+		*deck = (*deck)[1:]
 	}
 	return newHand
 }
@@ -75,9 +76,7 @@ func main() {
 	Shuffle(deck)
 
 	println(len(deck))
-	var hand1 = drawCards(deck, 5)
-	//TODO remove cards from deck when drawing
-	//? pass by reference
+	var hand1 = drawCards(&deck, 5)
 	println(len(deck))
 
 	// println(hand1)
