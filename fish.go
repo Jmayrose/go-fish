@@ -4,15 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 //Competitor - Computer or Human Player
-type Competitor struct {
-	hand         []Card
-	score, guess int
-}
 
-func takeTurn(gotAny int, player *[]Card, opponent *[]Card) {
+func takeTurn(gotAny int64, player *[]Card, opponent *[]Card) {
 
 	//if opponent contains a card with value gotAny
 	if true {
@@ -27,6 +24,12 @@ func takeTurn(gotAny int, player *[]Card, opponent *[]Card) {
 }
 
 func main() {
+	playBlackjack()
+	type Competitor struct {
+		hand         []Card
+		score, guess int64
+	}
+
 	var deck = makeDeck()
 	var player Competitor
 	var dealer Competitor
@@ -39,6 +42,17 @@ func main() {
 		fmt.Println("Enter a card value to ask for")
 		scanner := bufio.NewScanner(os.Stdin)
 		for scanner.Scan() {
+			var guessParse = scanner.Text()
+			switch guessParse {
+			case "J":
+			case "Q":
+			case "K":
+			case "A":
+			default:
+				player.guess, _ = strconv.ParseInt(guessParse, 10, 32)
+
+			}
+
 			//TODO Parse 2-9, J, Q, K, A
 		}
 		takeTurn(player.guess, &player.hand, &dealer.hand)
